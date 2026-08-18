@@ -1,0 +1,170 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "russisch", "label": "russisch", "shape": "dot"}, {"color": "#97c2fc", "id": "Welt", "label": "Welt", "shape": "dot"}, {"color": "#97c2fc", "id": "Schuld", "label": "Schuld", "shape": "dot"}, {"color": "#97c2fc", "id": "dorthin", "label": "dorthin", "shape": "dot"}, {"color": "#97c2fc", "id": "Fr\u00fchling", "label": "Fr\u00fchling", "shape": "dot"}, {"color": "#97c2fc", "id": "Verteidigung", "label": "Verteidigung", "shape": "dot"}, {"color": "#97c2fc", "id": "Slawjansk", "label": "Slawjansk", "shape": "dot"}, {"color": "#97c2fc", "id": "Freund", "label": "Freund", "shape": "dot"}, {"color": "#97c2fc", "id": "geben", "label": "geben", "shape": "dot"}, {"color": "#97c2fc", "id": "Banner", "label": "Banner", "shape": "dot"}, {"color": "#97c2fc", "id": "Idee", "label": "Idee", "shape": "dot"}, {"color": "#97c2fc", "id": "erheben", "label": "erheben", "shape": "dot"}, {"color": "#97c2fc", "id": "Hunderttausend", "label": "Hunderttausend", "shape": "dot"}, {"color": "#97c2fc", "id": "Mensch", "label": "Mensch", "shape": "dot"}, {"color": "#97c2fc", "id": "gesamt", "label": "gesamt", "shape": "dot"}, {"color": "#97c2fc", "id": "Ukraine", "label": "Ukraine", "shape": "dot"}, {"color": "#97c2fc", "id": "Charkow", "label": "Charkow", "shape": "dot"}, {"color": "#97c2fc", "id": "Odessa", "label": "Odessa", "shape": "dot"}, {"color": "#97c2fc", "id": "blitzn", "label": "blitzn", "shape": "dot"}, {"color": "#97c2fc", "id": "Trikolore", "label": "Trikolore", "shape": "dot"}, {"color": "#97c2fc", "id": "F\u00fchrer", "label": "F\u00fchrer", "shape": "dot"}, {"color": "#97c2fc", "id": "Kreml", "label": "Kreml", "shape": "dot"}, {"color": "#97c2fc", "id": "vermasseln", "label": "vermasseln", "shape": "dot"}, {"color": "#97c2fc", "id": "Leute", "label": "Leute", "shape": "dot"}, {"color": "#97c2fc", "id": "eintreten", "label": "eintreten", "shape": "dot"}, {"color": "#97c2fc", "id": "selber", "label": "selber", "shape": "dot"}, {"color": "#97c2fc", "id": "S\u00fcdosten", "label": "S\u00fcdosten", "shape": "dot"}, {"color": "#97c2fc", "id": "2022", "label": "2022", "shape": "dot"}, {"color": "#97c2fc", "id": "Frieden", "label": "Frieden", "shape": "dot"}, {"color": "#97c2fc", "id": "eintraen", "label": "eintraen", "shape": "dot"}, {"color": "#97c2fc", "id": "letzter", "label": "letzter", "shape": "dot"}, {"color": "#97c2fc", "id": "12", "label": "12", "shape": "dot"}, {"color": "#97c2fc", "id": "M\u00fche", "label": "M\u00fche", "shape": "dot"}, {"color": "#97c2fc", "id": "Geschichte", "label": "Geschichte", "shape": "dot"}, {"color": "#97c2fc", "id": "Anti-Maidan", "label": "Anti-Maidan", "shape": "dot"}, {"color": "#97c2fc", "id": "Bewegung", "label": "Bewegung", "shape": "dot"}, {"color": "#97c2fc", "id": "Anfang", "label": "Anfang", "shape": "dot"}, {"color": "#97c2fc", "id": "studieren", "label": "studieren", "shape": "dot"}, {"color": "#97c2fc", "id": "unterscheiden", "label": "unterscheiden", "shape": "dot"}, {"color": "#97c2fc", "id": "geschehen", "label": "geschehen", "shape": "dot"}, {"color": "#97c2fc", "id": "vergleichen", "label": "vergleichen", "shape": "dot"}, {"color": "#97c2fc", "id": "verstehen", "label": "verstehen", "shape": "dot"}, {"color": "#97c2fc", "id": "Gast", "label": "Gast", "shape": "dot"}, {"color": "#97c2fc", "id": "Waffe", "label": "Waffe", "shape": "dot"}, {"color": "#97c2fc", "id": "Hand", "label": "Hand", "shape": "dot"}, {"color": "#97c2fc", "id": "fremd", "label": "fremd", "shape": "dot"}]);
+                  edges = new vis.DataSet([{"from": "russisch", "to": "Welt"}, {"from": "Schuld", "to": "russisch"}, {"from": "Welt", "to": "dorthin"}, {"from": "russisch", "to": "Fr\u00fchling"}, {"from": "Verteidigung", "to": "Slawjansk"}, {"from": "Schuld", "to": "Freund"}, {"from": "geben", "to": "Banner"}, {"from": "Banner", "to": "Idee"}, {"from": "Idee", "to": "erheben"}, {"from": "erheben", "to": "Hunderttausend"}, {"from": "Hunderttausend", "to": "Mensch"}, {"from": "Mensch", "to": "gesamt"}, {"from": "gesamt", "to": "Ukraine"}, {"from": "Ukraine", "to": "Charkow"}, {"from": "Charkow", "to": "Odessa"}, {"from": "Odessa", "to": "blitzn"}, {"from": "blitzn", "to": "Trikolore"}, {"from": "Trikolore", "to": "F\u00fchrer"}, {"from": "F\u00fchrer", "to": "Kreml"}, {"from": "Kreml", "to": "vermasseln"}, {"from": "vermasseln", "to": "Schuld"}, {"from": "Welt", "to": "Leute"}, {"from": "Leute", "to": "eintreten"}, {"from": "eintreten", "to": "Mensch"}, {"from": "Mensch", "to": "selber"}, {"from": "selber", "to": "S\u00fcdosten"}, {"from": "S\u00fcdosten", "to": "2022"}, {"from": "2022", "to": "russisch"}, {"from": "russisch", "to": "Frieden"}, {"from": "Frieden", "to": "eintraen"}, {"from": "eintraen", "to": "letzter"}, {"from": "letzter", "to": "12"}, {"from": "12", "to": "Mensch"}, {"from": "Mensch", "to": "M\u00fche"}, {"from": "M\u00fche", "to": "Geschichte"}, {"from": "Geschichte", "to": "Anti-Maidan"}, {"from": "Anti-Maidan", "to": "gesamt"}, {"from": "gesamt", "to": "Bewegung"}, {"from": "Bewegung", "to": "Anfang"}, {"from": "Anfang", "to": "russisch"}, {"from": "Welt", "to": "studieren"}, {"from": "studieren", "to": "unterscheiden"}, {"from": "unterscheiden", "to": "geschehen"}, {"from": "geschehen", "to": "vergleichen"}, {"from": "geschehen", "to": "verstehen"}, {"from": "verstehen", "to": "Gast"}, {"from": "Gast", "to": "Waffe"}, {"from": "Waffe", "to": "Hand"}, {"from": "Hand", "to": "fremd"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

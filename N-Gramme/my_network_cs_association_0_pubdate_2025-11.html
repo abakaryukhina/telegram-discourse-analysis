@@ -1,0 +1,170 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "\u00fcbrig", "label": "\u00fcbrig", "shape": "dot"}, {"color": "#97c2fc", "id": "bleiben", "label": "bleiben", "shape": "dot"}, {"color": "#97c2fc", "id": "Gennadi", "label": "Gennadi", "shape": "dot"}, {"color": "#97c2fc", "id": "Nikolajewitsch", "label": "Nikolajewitsch", "shape": "dot"}, {"color": "#97c2fc", "id": "Person", "label": "Person", "shape": "dot"}, {"color": "#97c2fc", "id": "Granate", "label": "Granate", "shape": "dot"}, {"color": "#97c2fc", "id": "RPG-7", "label": "RPG-7", "shape": "dot"}, {"color": "#97c2fc", "id": "treffen", "label": "treffen", "shape": "dot"}, {"color": "#97c2fc", "id": "stark", "label": "stark", "shape": "dot"}, {"color": "#97c2fc", "id": "Mann", "label": "Mann", "shape": "dot"}, {"color": "#97c2fc", "id": "Fleisch", "label": "Fleisch", "shape": "dot"}, {"color": "#97c2fc", "id": "Umhang", "label": "Umhang", "shape": "dot"}, {"color": "#97c2fc", "id": "h\u00fcllen", "label": "h\u00fcllen", "shape": "dot"}, {"color": "#97c2fc", "id": "Stunde", "label": "Stunde", "shape": "dot"}, {"color": "#97c2fc", "id": "vergingen", "label": "vergingen", "shape": "dot"}, {"color": "#97c2fc", "id": "gehen", "label": "gehen", "shape": "dot"}, {"color": "#97c2fc", "id": "Troschew", "label": "Troschew", "shape": "dot"}, {"color": "#97c2fc", "id": "Anm", "label": "Anm", "shape": "dot"}, {"color": "#97c2fc", "id": "d.", "label": "d.", "shape": "dot"}, {"color": "#97c2fc", "id": "Red.", "label": "Red.", "shape": "dot"}, {"color": "#97c2fc", "id": "sehen", "label": "sehen", "shape": "dot"}, {"color": "#97c2fc", "id": "Moment", "label": "Moment", "shape": "dot"}, {"color": "#97c2fc", "id": "fragen", "label": "fragen", "shape": "dot"}, {"color": "#97c2fc", "id": "zuschauen", "label": "zuschauen", "shape": "dot"}, {"color": "#97c2fc", "id": "Zelt", "label": "Zelt", "shape": "dot"}, {"color": "#97c2fc", "id": "gew\u00f6hnlich", "label": "gew\u00f6hnlich", "shape": "dot"}, {"color": "#97c2fc", "id": "Krankentrage", "label": "Krankentrage", "shape": "dot"}, {"color": "#97c2fc", "id": "liegen", "label": "liegen", "shape": "dot"}, {"color": "#97c2fc", "id": "Rest", "label": "Rest", "shape": "dot"}, {"color": "#97c2fc", "id": "Beamter", "label": "Beamter", "shape": "dot"}, {"color": "#97c2fc", "id": "sinken", "label": "sinken", "shape": "dot"}, {"color": "#97c2fc", "id": "Knie", "label": "Knie", "shape": "dot"}, {"color": "#97c2fc", "id": "heuln", "label": "heuln", "shape": "dot"}, {"color": "#97c2fc", "id": "Frau", "label": "Frau", "shape": "dot"}, {"color": "#97c2fc", "id": "verwundet", "label": "verwundet", "shape": "dot"}, {"color": "#97c2fc", "id": "Tier", "label": "Tier", "shape": "dot"}, {"color": "#97c2fc", "id": "Verzweiflung", "label": "Verzweiflung", "shape": "dot"}, {"color": "#97c2fc", "id": "Ohnmacht", "label": "Ohnmacht", "shape": "dot"}, {"color": "#97c2fc", "id": "verlieren", "label": "verlieren", "shape": "dot"}, {"color": "#97c2fc", "id": "lieben", "label": "lieben", "shape": "dot"}, {"color": "#97c2fc", "id": "respektiert", "label": "respektiert", "shape": "dot"}, {"color": "#97c2fc", "id": "Pervomayskoe", "label": "Pervomayskoe", "shape": "dot"}]);
+                  edges = new vis.DataSet([{"from": "\u00fcbrig", "to": "bleiben"}, {"from": "Gennadi", "to": "Nikolajewitsch"}, {"from": "Person", "to": "\u00fcbrig"}, {"from": "bleiben", "to": "Granate"}, {"from": "Granate", "to": "RPG-7"}, {"from": "RPG-7", "to": "treffen"}, {"from": "treffen", "to": "stark"}, {"from": "stark", "to": "Mann"}, {"from": "Mann", "to": "\u00fcbrig"}, {"from": "bleiben", "to": "Fleisch"}, {"from": "Fleisch", "to": "Umhang"}, {"from": "Umhang", "to": "h\u00fcllen"}, {"from": "h\u00fcllen", "to": "Stunde"}, {"from": "Stunde", "to": "vergingen"}, {"from": "vergingen", "to": "Fleisch"}, {"from": "Fleisch", "to": "gehen"}, {"from": "gehen", "to": "Mann"}, {"from": "Mann", "to": "Gennadi"}, {"from": "Nikolajewitsch", "to": "Troschew"}, {"from": "Troschew", "to": "Anm"}, {"from": "Anm", "to": "d."}, {"from": "d.", "to": "Red."}, {"from": "Red.", "to": "sehen"}, {"from": "sehen", "to": "Moment"}, {"from": "sehen", "to": "fragen"}, {"from": "fragen", "to": "zuschauen"}, {"from": "zuschauen", "to": "gehen"}, {"from": "gehen", "to": "Zelt"}, {"from": "Zelt", "to": "gew\u00f6hnlich"}, {"from": "gew\u00f6hnlich", "to": "Krankentrage"}, {"from": "Krankentrage", "to": "liegen"}, {"from": "liegen", "to": "Rest"}, {"from": "Rest", "to": "Beamter"}, {"from": "Beamter", "to": "Gennadi"}, {"from": "Nikolajewitsch", "to": "sinken"}, {"from": "sinken", "to": "Knie"}, {"from": "Knie", "to": "heuln"}, {"from": "heuln", "to": "Frau"}, {"from": "heuln", "to": "verwundet"}, {"from": "verwundet", "to": "Tier"}, {"from": "Tier", "to": "heuln"}, {"from": "heuln", "to": "Verzweiflung"}, {"from": "Verzweiflung", "to": "Ohnmacht"}, {"from": "Ohnmacht", "to": "Mann"}, {"from": "Mann", "to": "verlieren"}, {"from": "verlieren", "to": "lieben"}, {"from": "lieben", "to": "respektiert"}, {"from": "respektiert", "to": "Pervomayskoe"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,170 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "russisch", "label": "russisch", "shape": "dot"}, {"color": "#97c2fc", "id": "Welt", "label": "Welt", "shape": "dot"}, {"color": "#97c2fc", "id": "Vorbild", "label": "Vorbild", "shape": "dot"}, {"color": "#97c2fc", "id": "Krim", "label": "Krim", "shape": "dot"}, {"color": "#97c2fc", "id": "n\u00f6rdlich", "label": "n\u00f6rdlich", "shape": "dot"}, {"color": "#97c2fc", "id": "Milit\u00e4rbezirk", "label": "Milit\u00e4rbezirk", "shape": "dot"}, {"color": "#97c2fc", "id": "Narrativ", "label": "Narrativ", "shape": "dot"}, {"color": "#97c2fc", "id": "Kampf", "label": "Kampf", "shape": "dot"}, {"color": "#97c2fc", "id": "Nationalsozialismus", "label": "Nationalsozialismus", "shape": "dot"}, {"color": "#97c2fc", "id": "stellen", "label": "stellen", "shape": "dot"}, {"color": "#97c2fc", "id": "Frage", "label": "Frage", "shape": "dot"}, {"color": "#97c2fc", "id": "Nazi", "label": "Nazi", "shape": "dot"}, {"color": "#97c2fc", "id": "Russland", "label": "Russland", "shape": "dot"}, {"color": "#97c2fc", "id": "schauen", "label": "schauen", "shape": "dot"}, {"color": "#97c2fc", "id": "Nordmilit\u00e4rbezirk", "label": "Nordmilit\u00e4rbezirk", "shape": "dot"}, {"color": "#97c2fc", "id": "verzerren", "label": "verzerren", "shape": "dot"}, {"color": "#97c2fc", "id": "schlimm", "label": "schlimm", "shape": "dot"}, {"color": "#97c2fc", "id": "Russischen", "label": "Russischen", "shape": "dot"}, {"color": "#97c2fc", "id": "Fr\u00fchling", "label": "Fr\u00fchling", "shape": "dot"}, {"color": "#97c2fc", "id": "Donbass", "label": "Donbass", "shape": "dot"}, {"color": "#97c2fc", "id": "2014", "label": "2014", "shape": "dot"}, {"color": "#97c2fc", "id": "Protest", "label": "Protest", "shape": "dot"}, {"color": "#97c2fc", "id": "S\u00fcdosten", "label": "S\u00fcdosten", "shape": "dot"}, {"color": "#97c2fc", "id": "urspr\u00fcnglich", "label": "urspr\u00fcnglich", "shape": "dot"}, {"color": "#97c2fc", "id": "Maidan", "label": "Maidan", "shape": "dot"}, {"color": "#97c2fc", "id": "darstellen", "label": "darstellen", "shape": "dot"}, {"color": "#97c2fc", "id": "Mensch", "label": "Mensch", "shape": "dot"}, {"color": "#97c2fc", "id": "versammeln", "label": "versammeln", "shape": "dot"}, {"color": "#97c2fc", "id": "Separatismus", "label": "Separatismus", "shape": "dot"}, {"color": "#97c2fc", "id": "Abspaltung", "label": "Abspaltung", "shape": "dot"}, {"color": "#97c2fc", "id": "F\u00f6deration", "label": "F\u00f6deration", "shape": "dot"}, {"color": "#97c2fc", "id": "fordern", "label": "fordern", "shape": "dot"}, {"color": "#97c2fc", "id": "unabh\u00e4ngig", "label": "unabh\u00e4ngig", "shape": "dot"}, {"color": "#97c2fc", "id": "offiziell", "label": "offiziell", "shape": "dot"}, {"color": "#97c2fc", "id": "Position", "label": "Position", "shape": "dot"}, {"color": "#97c2fc", "id": "Moskau", "label": "Moskau", "shape": "dot"}, {"color": "#97c2fc", "id": "agieren", "label": "agieren", "shape": "dot"}, {"color": "#97c2fc", "id": "Erfolg", "label": "Erfolg", "shape": "dot"}, {"color": "#97c2fc", "id": "reagieren", "label": "reagieren", "shape": "dot"}, {"color": "#97c2fc", "id": "einmischen", "label": "einmischen", "shape": "dot"}, {"color": "#97c2fc", "id": "Anti-Maidanov-Anh\u00e4nger", "label": "Anti-Maidanov-Anh\u00e4nger", "shape": "dot"}, {"color": "#97c2fc", "id": "verpuffen", "label": "verpuffen", "shape": "dot"}, {"color": "#97c2fc", "id": "gesamt", "label": "gesamt", "shape": "dot"}, {"color": "#97c2fc", "id": "gelingen", "label": "gelingen", "shape": "dot"}, {"color": "#97c2fc", "id": "St\u00fcck", "label": "St\u00fcck", "shape": "dot"}, {"color": "#97c2fc", "id": "Land", "label": "Land", "shape": "dot"}, {"color": "#97c2fc", "id": "anderthalb", "label": "anderthalb", "shape": "dot"}, {"color": "#97c2fc", "id": "Meter", "label": "Meter", "shape": "dot"}, {"color": "#97c2fc", "id": "\u00fcberleben", "label": "\u00fcberleben", "shape": "dot"}]);
+                  edges = new vis.DataSet([{"from": "russisch", "to": "Welt"}, {"from": "Vorbild", "to": "Krim"}, {"from": "n\u00f6rdlich", "to": "Milit\u00e4rbezirk"}, {"from": "Narrativ", "to": "Kampf"}, {"from": "Kampf", "to": "Nationalsozialismus"}, {"from": "stellen", "to": "Frage"}, {"from": "Nazi", "to": "Russland"}, {"from": "schauen", "to": "Nordmilit\u00e4rbezirk"}, {"from": "Nordmilit\u00e4rbezirk", "to": "verzerren"}, {"from": "verzerren", "to": "schlimm"}, {"from": "schlimm", "to": "Russischen"}, {"from": "Russischen", "to": "Fr\u00fchling"}, {"from": "Fr\u00fchling", "to": "Donbass"}, {"from": "Donbass", "to": "2014"}, {"from": "2014", "to": "verzerren"}, {"from": "verzerren", "to": "Protest"}, {"from": "Protest", "to": "S\u00fcdosten"}, {"from": "S\u00fcdosten", "to": "urspr\u00fcnglich"}, {"from": "urspr\u00fcnglich", "to": "Protest"}, {"from": "Protest", "to": "Maidan"}, {"from": "Maidan", "to": "darstellen"}, {"from": "darstellen", "to": "Mensch"}, {"from": "Mensch", "to": "versammeln"}, {"from": "versammeln", "to": "Vorbild"}, {"from": "Krim", "to": "Separatismus"}, {"from": "Separatismus", "to": "Abspaltung"}, {"from": "Abspaltung", "to": "russisch"}, {"from": "russisch", "to": "F\u00f6deration"}, {"from": "F\u00f6deration", "to": "fordern"}, {"from": "fordern", "to": "unabh\u00e4ngig"}, {"from": "unabh\u00e4ngig", "to": "offiziell"}, {"from": "offiziell", "to": "Position"}, {"from": "Position", "to": "Moskau"}, {"from": "Moskau", "to": "agieren"}, {"from": "Moskau", "to": "Erfolg"}, {"from": "Erfolg", "to": "reagieren"}, {"from": "reagieren", "to": "einmischen"}, {"from": "einmischen", "to": "Anti-Maidanov-Anh\u00e4nger"}, {"from": "Anti-Maidanov-Anh\u00e4nger", "to": "Erfolg"}, {"from": "Erfolg", "to": "verpuffen"}, {"from": "verpuffen", "to": "gesamt"}, {"from": "gesamt", "to": "Protest"}, {"from": "Protest", "to": "gelingen"}, {"from": "gelingen", "to": "St\u00fcck"}, {"from": "St\u00fcck", "to": "Land"}, {"from": "Land", "to": "anderthalb"}, {"from": "anderthalb", "to": "Meter"}, {"from": "Meter", "to": "Donbass"}, {"from": "Donbass", "to": "\u00fcberleben"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
