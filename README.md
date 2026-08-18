@@ -55,4 +55,4 @@ cd telegram-discourse-analysis
 pip install -r requirements.txt
 
 # Run analysis
-jupyter notebook Studienleistung_2.ipynb
+jupyter notebook telegram_discourse_analysis.ipynb
